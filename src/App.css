@@ -1,7 +1,7 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
+  font-family: "Arial", sans-serif;
+  background-color: #f3f3f3;
 }
 
 .app {
@@ -11,20 +11,20 @@ body {
   align-items: center;
   justify-content: space-between;
   min-height: 100vh;
-  color: white;
+  color: #161616;
 }
 
 header {
-  background: rgba(0, 0, 0, 0.6);
+  background: linear-gradient(to right, #ff0084, #ea1d1d);
   padding: 1em;
   width: 100%;
   box-sizing: border-box;
 }
 
 .headerTitle {
-  font-family: Arial, sans-serif;
-  font-size: 24px;
-  color: white;
+  font-family: "Arial", sans-serif;
+  font-size: 32px;
+  color: #ffffff;
 }
 
 .results {
@@ -35,13 +35,13 @@ header {
 }
 
 .correct {
-  color: #15ca0c;
-  text-shadow: 2px 2px 4px #000000;
+  color: #0bbb17;
+  text-shadow: 2px 2px 4px rgba(255, 64, 129, 0.3);
 }
 
 .uncorrect {
-  color: #f64f59;
-  text-shadow: 2px 2px 4px #000000;
+  color: #cf0b08;
+  text-shadow: 2px 2px 4px rgba(229, 57, 53, 0.3);
 }
 
 .questions {
@@ -50,38 +50,69 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(to right, #9575cd, #0288d1);
   padding: 2em;
   border-radius: 10px;
   margin: 1em 0;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.number {
+  font-size: 18px;
+  color: #000000;
+  margin-bottom: 10px;
 }
 
 .question {
-  font-family: Arial, sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 24px;
   margin-bottom: 0.5em;
+  line-height: 1.5;
 }
 
 .answers {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1em;
+  margin-top: 1em;
 }
 
 .button {
-  padding: 0.5em 1em;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  background-color: #ffffff;
-  color: #333;
+  padding: 1em 2em;
+  font-family: "Arial", sans-serif;
+  font-size: 18px;
+  background: linear-gradient(to right, #ff4081, #f50057);
+  color: #ffffff;
   border: none;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+  transition: all 0.3s;
+  min-width: 150px;
 }
 
 .button:hover {
-  background-color: #f1f1f1;
-  color: #222;
+  transform: translateY(-2px);
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(to right, #ff4081, #f50057, #ff4081);
+  background-size: 200% auto;
+  animation: gradientAnimation 3s linear infinite;
+}
+
+.button:active {
+  transform: translateY(2px);
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

@@ -4,36 +4,46 @@ import he from "he";
 import "./App.css";
 import Answers from "./components/answers";
 
+import trueSound from "./assets/true.mp3";
+import falseSound from "./assets/false.mp3";
 
 const initialState = {
   correct: 0,
-  uncorrect: 0,
+  incorrect: 0,
   click: false,
-}
+  number: 1,
+};
 
 function reducer(state, action) {
-  switch(action.type) {
+  switch (action.type) {
     case "ADD_CORRECT":
-      return {...state, correct: state.correct + 1};
+      return { ...state, correct: state.correct + 1 };
     case "ADD_INCORRECT":
-      return {...state, incorrect: state.incorrect + 1};
+      return { ...state, incorrect: state.incorrect + 1 };
     case "CLICK":
-      return {...state, click: !state.click}
+      return { ...state, click: !state.click };
+    case "NUMBER":
+      return { ...state, number: state.number + 1 };
   }
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const [question, setQuestion] = useState("");
-
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [answers, setAnswers] = useState([]);
 
+  const trueClick = new Audio(trueSound);
+  const falseClick = new Audio(falseSound);
+
   const checkAnswer = (event) => {
-    const btnAnswer = event.target.innerText
-    correctAnswer === btnAnswer ? dispatch({type: "ADD_CORRECT"}) : dispatch({type: "ADD_INCORRECT"})
-    dispatch({type: "CLICK"})
+    const btnAnswer = event.target.innerText;
+    correctAnswer === btnAnswer
+      ? (dispatch({ type: "ADD_CORRECT" }), trueClick.play())
+      : (dispatch({ type: "ADD_INCORRECT" }), falseClick.play());
+    dispatch({ type: "NUMBER" });
+    dispatch({ type: "CLICK" });
   };
 
   const shuffleArray = (array) => {
@@ -55,7 +65,7 @@ function App() {
           firstQuestion.correct_answer,
           ...firstQuestion.incorrect_answers,
         ]);
-        setAnswers(shuffledAnswers)
+        setAnswers(shuffledAnswers);
         setCorrectAnswer(firstQuestion.correct_answer);
       })
       .catch((error) => {
@@ -74,12 +84,15 @@ function App() {
           <p className="uncorrect">{state.incorrect}</p>
         </div>
         <div className="questions">
+          <p className="number">Question {state.number}</p>
           <h2 className="question">{he.decode(question)}</h2>
           <Answers answers={answers} checkAnswer={checkAnswer} />
         </div>
       </div>
       <footer>
-        <p className="copyright">Nikolai Lazovatskii 2023</p>
+        <p className="copyright">
+          Nikolai Lazovatskii - ReactJS project - June 2023
+        </p>
       </footer>
     </div>
   );
