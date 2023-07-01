@@ -4,8 +4,14 @@ import he from "he";
 import "./App.css";
 import Answers from "./components/answers";
 
+
+// Звуковые файлы
+
 import trueSound from "./assets/true.mp3";
 import falseSound from "./assets/false.mp3";
+
+
+// Reducer
 
 const initialState = {
   correct: 0,
@@ -37,6 +43,10 @@ function App() {
   const trueClick = new Audio(trueSound);
   const falseClick = new Audio(falseSound);
 
+
+  // Проверка выбранной кнопки, проверяеться правильный ли вариант ответа на кнопке
+  // Так же происходять несколько других событий
+
   const checkAnswer = (event) => {
     const btnAnswer = event.target.innerText;
     correctAnswer === btnAnswer
@@ -46,6 +56,10 @@ function App() {
     dispatch({ type: "CLICK" });
   };
 
+
+  // Функция перемешивание элиментов массива с ответами
+  // Правильный ответ не всегда будет на первой позиции
+
   const shuffleArray = (array) => {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -54,6 +68,10 @@ function App() {
     }
     return shuffled;
   };
+
+
+  // Работа с API
+  // Вычленение ответов, текста вопроса из API, применение к ним функций
 
   useEffect(() => {
     fetch("https://opentdb.com/api.php?amount=1&category=18")

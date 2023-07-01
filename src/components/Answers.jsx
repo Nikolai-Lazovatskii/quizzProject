@@ -2,6 +2,8 @@
 import he from "he";
 
 const Answers = (props) => {
+
+  //  Вывод вариантов ответов
     
   return (
     <div className="answers">
