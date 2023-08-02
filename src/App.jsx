@@ -9,6 +9,7 @@ import Answers from "./components/answers";
 
 import trueSound from "./assets/true.mp3";
 import falseSound from "./assets/false.mp3";
+import Timer from "./components/Timer";
 
 
 // Reducer
@@ -37,6 +38,7 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const [question, setQuestion] = useState("");
+  const [flag, setFlag] = useState(true)
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [answers, setAnswers] = useState([]);
 
@@ -49,6 +51,7 @@ function App() {
 
   const checkAnswer = (event) => {
     const btnAnswer = event.target.innerText;
+    setFlag(!flag)
     correctAnswer === btnAnswer
       ? (dispatch({ type: "ADD_CORRECT" }), trueClick.play())
       : (dispatch({ type: "ADD_INCORRECT" }), falseClick.play());
@@ -70,6 +73,11 @@ function App() {
   };
 
 
+  const handleTimeExpired = () => {
+    setFlag(!flag)
+  }
+
+
   // Работа с API
   // Вычленение ответов, текста вопроса из API, применение к ним функций
 
@@ -89,7 +97,7 @@ function App() {
       .catch((error) => {
         console.log("Произошла ошибка:", error);
       });
-  }, [state.click]);
+  }, [flag]);
 
   return (
     <div className="app">
@@ -99,6 +107,7 @@ function App() {
       <div>
         <div className="results">
           <p className="correct">{state.correct}</p>
+          <Timer flag={flag} handleTimeExpired={handleTimeExpired}/>
           <p className="uncorrect">{state.incorrect}</p>
         </div>
         <div className="questions">
