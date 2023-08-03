@@ -19,6 +19,7 @@ const initialState = {
   incorrect: 0,
   click: false,
   number: 1,
+  flag: true,
 };
 
 function reducer(state, action) {
@@ -31,6 +32,8 @@ function reducer(state, action) {
       return { ...state, click: !state.click };
     case "NUMBER":
       return { ...state, number: state.number + 1 };
+    case "FLAG":
+      return{...state, flag: !state.flag }
   }
 }
 
@@ -38,7 +41,6 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const [question, setQuestion] = useState("");
-  const [flag, setFlag] = useState(true)
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [answers, setAnswers] = useState([]);
 
@@ -51,7 +53,7 @@ function App() {
 
   const checkAnswer = (event) => {
     const btnAnswer = event.target.innerText;
-    setFlag(!flag)
+    dispatch({ type: "FLAG" });
     correctAnswer === btnAnswer
       ? (dispatch({ type: "ADD_CORRECT" }), trueClick.play())
       : (dispatch({ type: "ADD_INCORRECT" }), falseClick.play());
@@ -73,8 +75,10 @@ function App() {
   };
 
 
+  // Проверка истечения времени
+
   const handleTimeExpired = () => {
-    setFlag(!flag)
+    dispatch({type: "FLAG"})
   }
 
 
@@ -97,7 +101,7 @@ function App() {
       .catch((error) => {
         console.log("Произошла ошибка:", error);
       });
-  }, [flag]);
+  }, [state.flag]);
 
   return (
     <div className="app">
@@ -107,7 +111,7 @@ function App() {
       <div>
         <div className="results">
           <p className="correct">{state.correct}</p>
-          <Timer flag={flag} handleTimeExpired={handleTimeExpired}/>
+          <Timer flag={state.flag} handleTimeExpired={handleTimeExpired}/>
           <p className="uncorrect">{state.incorrect}</p>
         </div>
         <div className="questions">

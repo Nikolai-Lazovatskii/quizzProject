@@ -2,13 +2,22 @@
 import { useEffect } from "react";
 import { useState } from "react";
 
+
+// Компонент таймера
+
 const Timer = ({flag, handleTimeExpired}) => {
 
   const [timer, setTimer] = useState(30)
 
+
+  // Обнуление таймера
+
   useEffect(() => {
     setTimer(30)
   }, [flag])
+
+
+  // Счет таймера и функция при окончании
   
   useEffect(() => {
     if (timer > 0) {
