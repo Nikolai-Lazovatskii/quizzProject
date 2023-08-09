@@ -1,19 +1,13 @@
 import { useEffect, useReducer } from "react";
 import { useState } from "react";
-import he from "he";
+import he from "he"; // HTML Entity encoder/decoder
 import "./App.css";
 import Answers from "./components/answers";
-
-
-// Звуковые файлы
-
 import trueSound from "./assets/true.mp3";
 import falseSound from "./assets/false.mp3";
 import Timer from "./components/Timer";
 
-
-// Reducer
-
+// Initial state for the reducer
 const initialState = {
   correct: 0,
   incorrect: 0,
@@ -22,6 +16,7 @@ const initialState = {
   flag: true,
 };
 
+// Reducer function to handle different actions
 function reducer(state, action) {
   switch (action.type) {
     case "ADD_CORRECT":
@@ -33,24 +28,21 @@ function reducer(state, action) {
     case "NUMBER":
       return { ...state, number: state.number + 1 };
     case "FLAG":
-      return{...state, flag: !state.flag }
+      return { ...state, flag: !state.flag };
   }
 }
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-
   const [question, setQuestion] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [answers, setAnswers] = useState([]);
 
+  // Sound effects for correct and incorrect answers
   const trueClick = new Audio(trueSound);
   const falseClick = new Audio(falseSound);
 
-
-  // Проверка выбранной кнопки, проверяеться правильный ли вариант ответа на кнопке
-  // Так же происходять несколько других событий
-
+  // Function to check if the clicked answer is correct
   const checkAnswer = (event) => {
     const btnAnswer = event.target.innerText;
     dispatch({ type: "FLAG" });
@@ -61,10 +53,7 @@ function App() {
     dispatch({ type: "CLICK" });
   };
 
-
-  // Функция перемешивание элиментов массива с ответами
-  // Правильный ответ не всегда будет на первой позиции
-
+  // Function to shuffle answers array
   const shuffleArray = (array) => {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -74,17 +63,12 @@ function App() {
     return shuffled;
   };
 
-
-  // Проверка истечения времени
-
+  // Function to handle time expiration
   const handleTimeExpired = () => {
-    dispatch({type: "FLAG"})
+    dispatch({ type: "FLAG" });
   }
 
-
-  // Работа с API
-  // Вычленение ответов, текста вопроса из API, применение к ним функций
-
+  // Fetching questions and answers from API
   useEffect(() => {
     fetch("https://opentdb.com/api.php?amount=1&category=18")
       .then((response) => response.json())
@@ -99,7 +83,7 @@ function App() {
         setCorrectAnswer(firstQuestion.correct_answer);
       })
       .catch((error) => {
-        console.log("Произошла ошибка:", error);
+        console.log("An error occurred:", error);
       });
   }, [state.flag]);
 
@@ -111,7 +95,7 @@ function App() {
       <div>
         <div className="results">
           <p className="correct">{state.correct}</p>
-          <Timer flag={state.flag} handleTimeExpired={handleTimeExpired}/>
+          <Timer flag={state.flag} handleTimeExpired={handleTimeExpired} />
           <p className="uncorrect">{state.incorrect}</p>
         </div>
         <div className="questions">
